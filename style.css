@@ -1,0 +1,302 @@
+* {
+    box-sizing: border-box;
+}
+
+/* auth-container NÃO tem display:none aqui — o JS controla tudo após verificar sessão */
+#auth-container {
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+/* Tela de loading */
+#loading-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    gap: 15px;
+    color: #888;
+}
+
+.loading-spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid #e0e0e0;
+    border-top-color: var(--accent);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+:root {
+    --primary: #1b5e20;
+    --accent: #4caf50;
+    --bg: #f4f7f6;
+    --white: #ffffff;
+}
+
+body {
+    font-family: 'Segoe UI', sans-serif;
+    background: var(--bg);
+    margin: 0;
+    color: #333;
+}
+
+header {
+    background: var(--primary);
+    color: white;
+    padding: 20px;
+    text-align: center;
+}
+
+.container {
+    padding: 20px;
+    max-width: 600px;
+    margin: auto;
+}
+
+.card { 
+    background: #1e1e1e;
+    padding: 30px; 
+    border-radius: 15px; 
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3); 
+    margin-bottom: 20px;
+    width: 100%;
+    max-width: 400px;
+}
+
+.form-card {
+    border-top: 6px solid var(--accent);
+    text-align: center;
+}
+
+input { 
+    width: 100%; 
+    padding: 12px; 
+    margin: 10px 0; 
+    border-radius: 8px; 
+    border: 1px solid #444; 
+    background: #333; 
+    color: white;
+    font-size: 1rem; 
+}
+
+/* Grid de Livros Ativos */
+.grid-lento {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+.card-ativo {
+    background: white;
+    border-left: 6px solid var(--accent);
+    padding: 20px; /* Aumentei um pouco o respiro */
+    border-radius: 16px; /* Mais arredondado seguindo o novo padrão */
+    display: flex;
+    flex-direction: column; /* Agora os itens ficam um embaixo do outro */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+}
+
+.card-ativo.concluido-hoje {
+    border-left-color: #4caf50; /* Mantém verde mas pode ser um tom mais claro */
+    background: #f9fff9;
+}
+
+.info-leitura h4 {
+    margin: 0;
+    font-size: 1.1rem;
+}
+
+.trecho-texto {
+    color: var(--primary);
+    font-weight: bold;
+    display: block;
+    margin: 4px 0;
+}
+
+/* Biblioteca Categorizada */
+.categoria-titulo {
+    background: #e0e0e0;
+    padding: 12px;
+    border-radius: 8px;
+    margin-top: 15px;
+    cursor: pointer;
+    font-weight: bold;
+    display: flex;
+    justify-content: space-between;
+}
+
+.livros-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    gap: 10px;
+    padding: 10px 0;
+}
+
+.card-livro {
+    background: white;
+    padding: 10px;
+    border-radius: 8px;
+    text-align: center;
+    font-size: 0.9rem;
+    cursor: pointer;
+    border: 1px solid #eee;
+    transition: background 0.2s, transform 0.1s;
+}
+
+.card-livro:hover {
+    background: var(--accent);
+    color: white;
+    transform: scale(1.03);
+}
+
+/* Botões */
+/* Botões Padronizados */
+.btn-primary, .btn-secundario {
+    padding: 12px 20px;
+    border-radius: 12px; /* Mais arredondado */
+    border: none;
+    font-weight: bold;
+    cursor: pointer;
+    transition: transform 0.1s, opacity 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.btn-primary {
+    background: var(--accent); /* Verde principal */
+    color: white;
+}
+
+.btn-secundario {
+    background: #f0f0f0; /* Cinza clarinho elegante */
+    color: #444;
+}
+
+.btn-primary:hover, .btn-secundario:hover {
+    opacity: 0.9;
+    transform: translateY(-1px);
+}
+
+/* Botão de fechar (X) redondo */
+.btn-close-round {
+    background: #fee;
+    color: #d32f2f;
+    border: none;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    font-size: 1.2rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s;
+}
+
+.btn-close-round:hover {
+    background: #fdd;
+}
+
+/* Botão Cancelar (mais visível que o link antigo) */
+.btn-cancel {
+    background: none;
+    border: 1px solid #ddd;
+    color: #888;
+    padding: 10px;
+    border-radius: 10px;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 8px;
+    font-weight: 500;
+}
+
+.btn-cancel:hover {
+    background: #fafafa;
+    color: #555;
+}
+
+.btn-check {
+    background: var(--accent);
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.btn-check:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+}
+
+.btn-link {
+    background: none;
+    border: none;
+    color: #666;
+    text-decoration: underline;
+    cursor: pointer;
+    padding: 10px;
+}
+
+/* Modal */
+.modal {
+    display: none; 
+    position: fixed;
+    z-index: 9999; /* Garante que fique em cima de tudo */
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7); /* Fundo um pouco mais escuro pra destacar */
+    
+    /* AS TRÊS LINHAS ABAIXO CENTRALIZAM TUDO */
+    display: none; /* O JS vai trocar para 'flex' quando abrir */
+    justify-content: center; 
+    align-items: center; 
+}
+
+.modal-content {
+    background: white;
+    padding: 30px;
+    width: 90%;
+    max-width: 400px;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    /* Removemos o margin antigo */
+}
+
+.btn-link-simple {
+    background: none;
+    border: none;
+    color: var(--accent);
+    text-decoration: underline;
+    cursor: pointer;
+    font-weight: bold;
+    padding: 0;
+}
+
+#admin-panel {
+    max-height: 400px;
+    overflow-y: auto; /* Cria um scroll se tiver muita gente lendo */
+    padding: 15px;
+    margin-bottom: 20px;
+}
+
+.card-livro.selecionado {
+    opacity: 0.4;
+    cursor: not-allowed;
+    filter: grayscale(100%); /* Fica cinza */
+    pointer-events: none;    /* Impede o clique */
+}

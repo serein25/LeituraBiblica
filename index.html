@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trilhas da Palavra</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body onload="inicializar()">
+
+    <!-- Tela de loading enquanto verifica sessão -->
+    <div id="loading-container">
+        <div class="loading-spinner"></div>
+        <p>Carregando...</p>
+    </div>
+
+    <div id="admin-panel" class="container" style="display: none; background: #fff3e0; border-radius: 15px; margin-top: 20px; border: 2px solid #ff9800;">
+        <h2 style="color: #e65100; text-align: center;">👨‍✈️ Painel do Administrador</h2>
+        <div id="lista-admin-geral">
+            <p>Carregando leituras de todos os usuários...</p>
+        </div>
+    </div>
+
+    <div id="auth-container" class="container">
+        <div id="login-section" class="card form-card">
+            <h2>🔐 Acessar sua Bíblia</h2>
+            <input type="email" id="login-email" placeholder="Seu e-mail">
+            <input type="password" id="login-password" placeholder="Sua senha">
+            <button class="btn-primary" onclick="login()">Entrar</button>
+            <p style="margin-top:15px; font-size:0.9rem;">
+                Não tem conta? <button class="btn-link-simple" onclick="alternarAuth('cadastro')">Criar conta nova</button>
+            </p>
+        </div>
+
+        <div id="signup-section" class="card form-card" style="display: none;">
+            <h2>✨ Criar Nova Conta</h2>
+            <input type="text" id="signup-nome" placeholder="Como quer ser chamado?">
+            <input type="email" id="signup-email" placeholder="Seu melhor e-mail">
+            <input type="password" id="signup-password" placeholder="Crie uma senha forte">
+            <button class="btn-primary" onclick="signup()">Finalizar Cadastro</button>
+            <p style="margin-top:15px; font-size:0.9rem;">
+                Já tem conta? <button class="btn-link-simple" onclick="alternarAuth('login')">Voltar para o login</button>
+            </p>
+        </div>
+    </div>
+
+    <div id="app-container" style="display: none;">
+        <header>
+            <h1>📖 Trilhas da Palavra</h1>
+            <div id="user-info">
+                Olá, <span id="user-email">...</span> | 
+                <button onclick="logout()" class="btn-link" style="color: white;">Sair</button>
+            </div>
+        </header>
+
+        <div class="container">
+            <section id="secao-lento">
+                <h3>🎯 Minhas Leituras de Hoje</h3>
+                <div id="lista-lendo-agora" class="grid-lento"></div>
+            </section>
+
+            <section>
+                <h3>📚 Biblioteca Completa</h3>
+                <div id="categorias-container"></div>
+            </section>
+        </div>
+    </div>
+
+    <div id="leitura-texto-container" class="modal">
+        <div class="modal-content" style="max-width: 600px; max-height: 85vh; display: flex; flex-direction: column;">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <h2 id="titulo-leitura" style="margin:0">Gênesis 1</h2>
+                <button class="btn-close-round" onclick="fecharLeitura()">✖</button>
+            </div>
+            <hr>
+            
+            <div id="texto-biblico" style="text-align: left; line-height: 1.8; overflow-y: auto; padding: 15px; flex-grow: 1; font-size: 1.1rem;">
+                Carregando palavra...
+            </div>
+
+            <div id="controles-leitura" style="margin-top: 20px; display: flex; gap: 10px;">
+                <button id="btn-cap-ant" class="btn-secundario" style="flex: 1;" onclick="mudarCapitulo(-1)">⬅ Anterior</button>
+                <button id="btn-cap-prox" class="btn-primary" style="flex: 2;" onclick="mudarCapitulo(1)">Próximo ➡</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-plano" class="modal">
+        <div class="modal-content">
+            <h2 id="modal-titulo-livro">Configurar Plano</h2>
+            <p>Quantos <b>capítulos</b> por dia?</p>
+            <input type="number" id="input-meta" value="1" min="1">
+            <p>Começar em qual capítulo?</p>
+            <input type="number" id="input-cap-inicio" value="1" min="1">
+            <button class="btn-primary" onclick="salvarPlanoNoBanco()">Iniciar Plano</button>
+            <button class="btn-cancel" onclick="fecharModal()">Cancelar</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
