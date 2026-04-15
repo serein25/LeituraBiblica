@@ -96,6 +96,16 @@ async function inicializar() {
         console.error("Erro ao inicializar:", e);
         mostrarLogin();
     }
+    supabaseClient.auth.onAuthStateChange(async (event, session) => {
+        if (event === "PASSWORD_RECOVERY") {
+            const novaSenha = prompt("Digite sua nova senha:");
+            if (novaSenha) {
+                const { error } = await supabaseClient.auth.updateUser({ password: novaSenha });
+                if (error) alert("Erro ao atualizar senha: " + error.message);
+                else alert("Senha atualizada com sucesso!");
+            }
+        }
+    });
 }
 
 function alternarAuth(tela) {
@@ -616,3 +626,41 @@ async function continuarLendoExtras() {
     
     await mudarCapitulo(1);
 }
+
+async function recuperarSenha() {
+    const email = document.getElementById('login-email').value;
+    
+    if (!email) {
+        alert("Por favor, digite seu e-mail no campo acima para receber o link de recuperação.");
+        return;
+    }
+
+    const { error } = await supabaseClient.auth.resetPasswordForEmail(email, {
+        redirectTo: window.location.href, // Manda o usuário de volta para o seu site
+    });
+
+    if (error) {
+        alert("Erro: " + error.message);
+    } else {
+        alert("📧 Link enviado! Verifique sua caixa de entrada (e a pasta de spam).");
+    }
+}
+
+// Este código roda sempre que o estado da conta muda
+supabaseClient.auth.onAuthStateChange(async (event, session) => {
+    if (event === "PASSWORD_RECOVERY") {
+        // O Supabase detecta que o usuário veio pelo link de reset
+        const novaSenha = prompt("Digite sua nova senha:");
+        
+        if (novaSenha) {
+            const { error } = await supabaseClient.auth.updateUser({ password: novaSenha });
+            
+            if (error) {
+                alert("Erro ao atualizar: " + error.message);
+            } else {
+                alert("✅ Senha alterada com sucesso! Você já pode entrar.");
+                location.reload(); // Recarrega para limpar os tokens da URL
+            }
+        }
+    }
+});
